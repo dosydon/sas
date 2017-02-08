@@ -142,20 +142,3 @@ class SAS(ABC):
     def is_essential(self,var):
         return self.axiom_layer[var] == -1
 
-    def to_fully_specified(self,unique_name=True):
-        sas = copy.deepcopy(self)
-        sas.operators = []
-        for op in self.operators:
-            if op.is_fully_supecified():
-                sas.operators.append(op)
-            else:
-                unspecified = op.unspecified_precond()
-                values = [list(range(0,len(self.primary_var[var]))) for var in unspecified]
-                for item in itertools.product(*values):
-                    specified = {var:item[i] for (i,var) in enumerate(unspecified)}
-                    new_op = copy.deepcopy(op)
-                    new_op.specify_precond(specified)
-                    if unique_name:
-                        new_op.name = op.name + "$" + str(specified)
-                    sas.operators.append(new_op)
-        return sas

@@ -87,16 +87,7 @@ class SAS3(SAS):
     def operators2str(self):
         res = '{}\n'.format(len(self.operators))
         for op in self.operators:
-            res += ("begin_operator\n"
-                    + "{}\n".format(op.name)
-                    + "{}\n".format(len(op.prevail)))
-            for (var,value) in sorted(op.prevail.items(),key=lambda x:x[0]):
-                res += "{} {}\n".format(var,value)
-            res += "{}\n".format(len(op.effect))
-            for (var,(fr,to)) in sorted(op.effect.items(),key=lambda x:x[0]):
-                res += "0 {} {} {}\n".format(var,fr,to)
-            res += ("{}\n".format(op.cost)
-                    + "end_operator\n")
+            res += str(op)
         return res
 
 if __name__ == '__main__':

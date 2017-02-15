@@ -6,10 +6,10 @@ class Axiom(Applicable):
 
     def __repr__(self):
         res = "begin_rule\n"
-        res += "{}\n".format(len(rule.prevail))
-        for (var,value) in sorted(rule.prevail.items(),key=lambda x:x[0]):
+        res += "{}\n".format(len(self.prevail))
+        for (var,value) in sorted(self.prevail.items(),key=lambda x:x[0]):
             res += "{} {}\n".format(var,value)
-        for (var,(fr,to)) in sorted(rule.effect.items(),key=lambda x:x[0]):
+        for (var,(fr,to)) in sorted(self.effect.items(),key=lambda x:x[0]):
             res += "{} {} {}\n".format(var,fr,to)
         res += "end_rule\n"
         return res

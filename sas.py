@@ -130,13 +130,7 @@ class SAS(ABC):
     def rules2str(self):
         res = '{}\n'.format(len(self.axioms))
         for rule in sorted(self.axioms):
-            res += "begin_rule\n"
-            res += "{}\n".format(len(rule.prevail))
-            for (var,value) in sorted(rule.prevail.items(),key=lambda x:x[0]):
-                res += "{} {}\n".format(var,value)
-            for (var,(fr,to)) in sorted(rule.effect.items(),key=lambda x:x[0]):
-                res += "{} {} {}\n".format(var,fr,to)
-            res += "end_rule\n"
+            res += str(rule)
         return res
 
     def is_essential(self,var):

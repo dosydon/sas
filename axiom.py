@@ -5,9 +5,14 @@ class Axiom(Applicable):
         self.cost = cost
 
     def __repr__(self):
-        prevail = str(sorted(self.prevail.items()))
-        effect = str(sorted(self.effect.items()))
-        return prevail + " -> " +effect
+        res = "begin_rule\n"
+        res += "{}\n".format(len(rule.prevail))
+        for (var,value) in sorted(rule.prevail.items(),key=lambda x:x[0]):
+            res += "{} {}\n".format(var,value)
+        for (var,(fr,to)) in sorted(rule.effect.items(),key=lambda x:x[0]):
+            res += "{} {} {}\n".format(var,fr,to)
+        res += "end_rule\n"
+        return res
 
     def __lt__(self,other):
         return str(self) < str(other)

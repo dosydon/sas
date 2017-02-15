@@ -50,26 +50,3 @@ class Applicable:
 
     def __lt__(self,other):
         return self.name < other.name
-
-    def is_fully_supecified(self):
-        for var,(fr,to) in self.effect.items():
-            if fr == -1:
-                return False
-        return True
-
-    def unspecified_precond(self):
-        res = []
-        for var,(fr,to) in self.effect.items():
-            if fr == -1:
-                res.append(var)
-        return res
-
-    def specify_precond(self,specified):
-        prevail = self.prevail
-        effect = self.effect
-        for k,v in specified.items():
-            fr,to = effect[k]
-            assert(fr == -1)
-            effect[k] = (v,to)
-        self.from_prevail(prevail,effect)
-

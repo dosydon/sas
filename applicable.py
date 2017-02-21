@@ -8,34 +8,38 @@ class Applicable:
     def __init__(self,name):
         self.name = name
 
-    def from_prevail(self,prevail,effect):
-        self.prevail = prevail
-        self.effect = effect
-        self.requirement = {} 
-        self.achievement = {} 
+    @classmethod
+    def from_prevail(cls, name, prevail, effect):
+        ap = cls(name)
+        ap.prevail = prevail
+        ap.effect = effect
+        ap.requirement = {} 
+        ap.achievement = {} 
         for k,v in prevail.items():
-            self.requirement[k] = v
+            ap.requirement[k] = v
         for var,(fr,to) in effect.items():
-            self.achievement[var] = to
+            ap.achievement[var] = to
             if fr == -1:
                 continue
-            self.requirement[var] = fr
-        return self
+            ap.requirement[var] = fr
+        return ap
 
-    def from_requirement(self,requirement,achievement):
-        self.requirement = requirement
-        self.achievement = achievement 
-        self.prevail = {}
-        self.effect = {}
-        for k,v in self.requirement.items():
-            if k in self.achievement:
-                self.effect[k] = (self.requirement[k],self.achievement[k])
+    @classmethod
+    def from_requirement(cls, name, requirement, achievement):
+        ap = cls(name)
+        ap.requirement = requirement
+        ap.achievement = achievement 
+        ap.prevail = {}
+        ap.effect = {}
+        for k,v in ap.requirement.items():
+            if k in ap.achievement:
+                ap.effect[k] = (ap.requirement[k],ap.achievement[k])
             else:
-                self.prevail[k] = self.requirement[k]
-        for k,v in self.achievement.items():
-            if not k in self.requirement:
-                self.effect[k] = (-1,v)
-        return self
+                ap.prevail[k] = ap.requirement[k]
+        for k,v in ap.achievement.items():
+            if not k in ap.requirement:
+                ap.effect[k] = (-1,v)
+        return ap
 
     def is_applicable(self,state):
         for (var,value) in self.requirement.items():

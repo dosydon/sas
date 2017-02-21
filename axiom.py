@@ -18,7 +18,6 @@ class Axiom(Applicable):
         return str(self) < str(other)
 
 if __name__ == '__main__':
-    op = Axiom("temp")
-    op.from_requirement({0:1,1:1},{1:2,2:1})
+    op = Axiom.from_requirement("temp",{0:1,1:1},{1:2,2:1})
     print(op.prevail)
     print(op.effect)

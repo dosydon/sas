@@ -54,8 +54,7 @@ class SAS3(SAS):
             effect[var] = (fr,to)
 
         cost = int(lines[-1])
-        new_operator = Operator(name,cost)
-        new_operator.from_prevail(prevail,effect)
+        new_operator = Operator.from_prevail(name,cost,prevail,effect)
         self.operators.append(new_operator)
 
     def variables2str(self):

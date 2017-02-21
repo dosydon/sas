@@ -49,8 +49,7 @@ class SAS1(SAS):
             (var,fr,to) = rest
             effect[var] = (fr,to)
 
-        new_operator = Operator(name,1)
-        new_operator.from_prevail(prevail,effect)
+        new_operator = Operator.from_prevail(name,1,prevail,effect)
         self.operators.append(new_operator)
 
     def variables2str(self):

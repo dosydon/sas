@@ -90,8 +90,7 @@ class SAS(ABC):
                 return
             effect[var] = (fr, to)
 
-        axiom = Axiom()
-        axiom.from_prevail(prevail, effect)
+        axiom = Axiom.from_prevail("axiom",prevail, effect)
         self.axioms.add(axiom)
 
     def version2str(self):

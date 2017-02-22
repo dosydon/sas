@@ -17,8 +17,13 @@ class Axiom(Applicable):
         res += "end_rule\n"
         return res
 
+    def key(self):
+        prevail = str(sorted(self.prevail.items()))
+        effect = str(sorted(self.effect.items()))
+        return prevail + " -> " +effect
+
     def __lt__(self, other):
-        return str(self) < str(other)
+        return self.key() < other.key()
 
 
 if __name__ == '__main__':

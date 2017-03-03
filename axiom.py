@@ -23,7 +23,7 @@ class Axiom(Applicable):
         return prevail + " -> " +effect
 
     def __lt__(self, other):
-        return self.key() < other.key()
+        return str(self) < str(other)
 
 
 if __name__ == '__main__':

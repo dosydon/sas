@@ -61,6 +61,20 @@ class Operator(Applicable):
                 + "end_operator\n")
         return res
 
+    def get_flipped(self, vars_to_flip):
+        pre = self.prevail.copy()
+        eff = self.effect.copy()
+        for var in pre:
+            if var in vars_to_flip:
+                pre[var] = get_flipped(pre[var])
+        for var in eff:
+            if var in vars_to_flip:
+                fr, to = eff[var]
+                eff[var] = (to, fr)
+        return (Operator.from_prevail(self.name, self.cost, pre, eff))
+
+def get_flipped(value):
+    return (2 - value) // 2
 
 if __name__ == '__main__':
     op = Operator.from_requirement("temp", 0, {0: 1, 1: 1}, {1: 2, 2: 1})

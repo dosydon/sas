@@ -4,6 +4,7 @@ import argparse
 from .sas import SAS
 from .operator import Operator
 from .axiom import Axiom
+from .conditional_operator import ConditionalOperator, ConditionalEffect
 
 
 class SAS3(SAS):
@@ -38,6 +39,7 @@ class SAS3(SAS):
     def parse_operator(self, lines):
         prevail = {}
         effect = {}
+        conditional_effects = []
 
         name = lines[0]
         num_prevail = int(lines[1])
@@ -46,17 +48,27 @@ class SAS3(SAS):
             prevail[var] = value
 
         num_effect = int(lines[num_prevail + 2])
+        with_conditional = False
         for line in lines[num_prevail + 3:num_prevail + num_effect + 3]:
             num_conditions = int(line[0])
+            assoc_conditions = {}
             rest = [int(num) for num in line.split(' ')][1:]
+            if num_conditions > 0:
+                with_conditional = True
+
             for i in range(0, num_conditions):
                 var, val = rest[:2]
                 rest = rest[2:]
+                assoc_conditions[var] = val
             (var, fr, to) = rest
             effect[var] = (fr, to)
+            conditional_effects.append(ConditionalEffect(assoc_conditions, (var, fr, to)))
 
         cost = int(lines[-1])
-        new_operator = Operator.from_prevail(name, cost, prevail, effect)
+        if with_conditional:
+            new_operator = ConditionalOperator(name, cost, prevail, conditional_effects)
+        else:
+            new_operator = Operator.from_prevail(name, cost, prevail, effect)
         self.operators.append(new_operator)
 
     def variables2str(self):

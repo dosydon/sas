@@ -1,4 +1,6 @@
 import copy
+def get_flipped(value):
+    return (2 - value) // 2
 
 class ConditionalEffect:
 
@@ -8,7 +10,7 @@ class ConditionalEffect:
 
     def __repr__(self):
         res = "{}".format(len(self.conditions))
-        for (var, value) in sorted(self.conditions.items(), key=lambda x: x[0]):
+        for (var, value) in sorted(self.conditions, key=lambda x: x[0]):
             res += " {} {}".format(var, value)
         var, fr, to = self.head
         res += " {} {} {}\n".format(var, fr, to)
@@ -39,14 +41,23 @@ class ConditionalOperator:
         return res
 
     def get_flipped(self, vars_to_flip):
-        return self
-#         pre = copy.deepcopy(self.prevail)
-#         eff = copy.deepcopy(self.effect)
-#         for var in pre:
-#             if var in vars_to_flip:
-#                 pre[var] = get_flipped(pre[var])
-#         for var in eff:
-#             if var in vars_to_flip:
-#                 fr, to = eff[var]
-#                 eff[var] = (to, fr)
+        pre = copy.deepcopy(self.prevail)
+        eff = copy.deepcopy(self.effect)
+        for var in pre:
+            if var in vars_to_flip:
+                pre[var] = get_flipped(pre[var])
 
+        cond_effs = []
+        for e in eff:
+            conditions = []
+            for var, val in e.conditions.items():
+                if var in vars_to_flip:
+                    conditions.append( (var, get_flipped(val)) )
+                else:
+                    conditions.append( (var, val) )
+            var, fr, to = e.head
+            if var in vars_to_flip:
+                cond_effs.append( ConditionalEffect( conditions, (var, get_flipped(fr), get_flipped(to))) )
+            else:
+                cond_effs.append( ConditionalEffect( conditions, (var, fr, to)))
+        return ConditionalOperator(self.name, self.cost, pre, cond_effs)

@@ -1,7 +1,7 @@
 import unittest
 import os
-from .sas1 import SAS1
-from .sas3 import SAS3
+from ..sas1 import SAS1
+from ..sas3 import SAS3
 
 
 class TestSas(unittest.TestCase):

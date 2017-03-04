@@ -10,7 +10,7 @@ class ConditionalEffect:
 
     def __repr__(self):
         res = "{}".format(len(self.conditions))
-        for (var, value) in sorted(self.conditions, key=lambda x: x[0]):
+        for (var, value) in sorted(self.conditions.items()):
             res += " {} {}".format(var, value)
         var, fr, to = self.head
         res += " {} {} {}\n".format(var, fr, to)
@@ -49,12 +49,12 @@ class ConditionalOperator:
 
         cond_effs = []
         for e in eff:
-            conditions = []
+            conditions = {}
             for var, val in e.conditions.items():
                 if var in vars_to_flip:
-                    conditions.append( (var, get_flipped(val)) )
+                    conditions[var] = get_flipped(val)
                 else:
-                    conditions.append( (var, val) )
+                    conditions[var] = val
             var, fr, to = e.head
             if var in vars_to_flip:
                 cond_effs.append( ConditionalEffect( conditions, (var, get_flipped(fr), get_flipped(to))) )
